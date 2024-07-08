@@ -1,5 +1,4 @@
 import os
-#from background import keep_alive
 import telebot
 import shutil
 import requests
@@ -125,5 +124,4 @@ def get_text_messages(message):
             bot.send_message(message.from_user.id, output)
             print(f'Failed to retrieve data: {response.status_code}')
 
-#keep_alive()
 bot.infinity_polling()
