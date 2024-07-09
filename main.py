@@ -2,11 +2,12 @@ import json
 import os
 import re
 import shutil
-from bs4 import BeautifulSoup
-import telebot
+
 import requests
-from telebot.types import InputFile
+import telebot
+from bs4 import BeautifulSoup
 from PIL import Image
+from telebot.types import InputFile
 
 bot = telebot.TeleBot(os.environ['BOT_API'])
 
@@ -28,7 +29,7 @@ def parser(message, bot_message):
     if response.status_code == 200:
         new_text = bot_edit_message(bot_message, 'Получен ответ от сервера.')
     else:
-        new_text = bot_edit_message(bot_message, f'ОШИБКА: Не удалось получить данные: {response.status_code}')
+        new_text = bot_edit_message(bot_message, f'ОШИБКА: Не удалось получить ответ от сервера: {response.status_code}')
         return
 
     soup = BeautifulSoup(response.content, 'html.parser')
@@ -45,8 +46,12 @@ def parser(message, bot_message):
         new_text = bot_edit_message(new_text, 'ОШИБКА: Скрипт 14 пуст или не содержит текста.')
         return
 
-    chapter_pattern = re.search(r'const local_text_epi\s*=\s*\'Ch\.(\d+)\';', script_14)
-    chapter = chapter_pattern.group(1) if chapter_pattern else bot_edit_message(bot_message, 'ОШИБКА: неизвестная глава.')
+    chapter_pattern = re.search(r'const local_text_epi\s*=\s*\'(?:Vol\.\d+\s*)?Ch\.(\d+\.\d+|\d+)\';', script_14)
+    if chapter_pattern:
+        chapter = chapter_pattern.group(1)
+    else:
+        new_text = bot_edit_message(new_text, 'ОШИБКА: неизвестная глава.')
+        return
     new_text = bot_edit_message(new_text, f'Номер главы: {chapter}')
 
     img_https_pattern = re.search(r'const imgHttps\s*=\s*(\[[^\]]*\])', script_14)
@@ -59,10 +64,10 @@ def parser(message, bot_message):
 
 def dir_maker(chapter, bot_message):
     parent_folder = f'Глава_{chapter}'
-    new_text = bot_edit_message(bot_message, f'Создана папка: {parent_folder}')
+    new_text = bot_edit_message(bot_message, f'Создаю папку: {parent_folder}')
     webp_folder = os.path.join(parent_folder, 'webp')
     os.makedirs(webp_folder, exist_ok=True)
-    new_text = bot_edit_message(new_text, f'Создана папка для загрузки изображений: {webp_folder}')
+    new_text = bot_edit_message(new_text, f'Создаю папку для загрузки изображений: {webp_folder}')
     return new_text, parent_folder, webp_folder
 
 def download_images(img_urls, folder_name, bot_message):
@@ -81,7 +86,7 @@ def download_images(img_urls, folder_name, bot_message):
     return new_text
 
 def convert_webp_to_png(src_folder, dst_folder, bot_message, size):
-    new_text = bot_edit_message(bot_message, f'Начата конвертация изображений в png. 0/{size}')
+    new_text = bot_edit_message(bot_message, f'Начинаю конвертацию изображений в png. 0/{size}')
     os.makedirs(dst_folder, exist_ok=True)
     n = 0
     for filename in os.listdir(src_folder):
@@ -97,10 +102,10 @@ def convert_webp_to_png(src_folder, dst_folder, bot_message, size):
     return new_text
 
 def create_and_send_archive(user_id, chapter, bot_message):
-    new_text = bot_edit_message(bot_message, 'Начато создание архива.')
+    new_text = bot_edit_message(bot_message, 'Начинаю создание архива.')
     parent_folder = f"Глава_{chapter}"
     shutil.make_archive(parent_folder, format='zip', root_dir=parent_folder)
-    new_text = bot_edit_message(new_text, 'Архив создан. Отправка.')
+    new_text = bot_edit_message(new_text, 'Архив создан. Отправляю.')
     bot.send_document(user_id, InputFile(f'{parent_folder}.zip'))
     os.remove(f'{parent_folder}.zip')
     return new_text
@@ -115,8 +120,8 @@ def start_command(message):
 
 @bot.message_handler(content_types=['text'])
 def get_text_messages(message):
-    bot_message = bot.send_message(message.from_user.id, 'Начинаю процесс.')
     send_message_to_admin(message)
+    bot_message = bot.send_message(message.from_user.id, 'Начинаю процесс.')
     bot_message, ch, img_urls = parser(message, bot_message)
     bot_message, parent_folder, webp_folder = dir_maker(ch, bot_message)
     bot_message = download_images(img_urls, webp_folder, bot_message)
@@ -125,5 +130,4 @@ def get_text_messages(message):
     bot_message = create_and_send_archive(message.from_user.id, ch, bot_message)
     shutil.rmtree(parent_folder)
     return
-
 bot.infinity_polling()
