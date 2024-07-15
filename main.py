@@ -10,6 +10,8 @@ from bs4 import BeautifulSoup
 from PIL import Image
 from telebot.types import InputFile
 
+load_dotenv()
+
 bot_api = os.getenv("BOT_API")
 admin_id = os.getenv("ADMIN_ID")
 
