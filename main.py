@@ -5,11 +5,15 @@ import shutil
 
 import requests
 import telebot
+from dotenv import load_dotenv
 from bs4 import BeautifulSoup
 from PIL import Image
 from telebot.types import InputFile
 
-bot = telebot.TeleBot(os.environ['BOT_API'])
+bot_api = os.getenv("BOT_API")
+admin_id = os.getenv("ADMIN_ID")
+
+bot = telebot.TeleBot(bot_api)
 
 def bot_edit_message(bot_message, text):
     bot_text = bot_message.text + '\n' + text
@@ -119,7 +123,7 @@ def create_and_send_archive(user_id, chapter, bot_message):
 
 def send_message_to_admin(message):
     output = f"Выполнено действие в чате: {message.from_user.id}\nОт пользователя: {message.from_user.username}\nСообщение: {message.text}"
-    bot.send_message(os.environ['ADMIN_ID'], output)
+    bot.send_message(admin_id, output)
 
 @bot.message_handler(commands=['help', 'start'])
 def start_command(message):
