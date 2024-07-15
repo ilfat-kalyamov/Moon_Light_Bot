@@ -1,0 +1,8 @@
+yaml
+steps:
+  - name: Run Python script
+    env:
+      BOT_API: ${{ secrets.BOT_API }}
+      ADMIN_ID: ${{ secrets.ADMIN_ID }}
+    run: |
+      python3 main.py
