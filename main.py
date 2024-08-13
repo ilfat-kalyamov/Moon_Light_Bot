@@ -9,6 +9,10 @@ from dotenv import load_dotenv
 from bs4 import BeautifulSoup
 from PIL import Image
 from telebot.types import InputFile
+from telebot import apihelper
+
+apihelper.API_URL = 'http://0.0.0.0:8081/bot{0}/{1}'
+apihelper.FILE_URL = 'http://0.0.0.0:8081'
 
 load_dotenv()
 
