@@ -119,13 +119,14 @@ def create_and_send_archive(user_id, chapter, bot_message):
     try:
         bot.send_document(chat_id=user_id, document=InputFile(f'{parent_folder}.zip'), reply_to_message_id=new_text.message_id)
     except Exception as e:
-        new_text = bot_edit_message(new_text, f'ОШИБКА: Не удалось отправить файл из-за ошибки со стороны Телеграмм, попытайтесь снова: {e}')
+        new_text = bot_edit_message(new_text, f'ОШИБКА: Не удалось отправить файл: {e}')
     os.remove(f'{parent_folder}.zip')
     return new_text
 
 def send_message_to_admin(message):
-    output = f"Выполнено действие в чате: {message.from_user.id}\nОт пользователя: {message.from_user.username}\nСообщение: {message.text}"
-    bot.send_message(admin_id, output)
+    if admin_id:
+        output = f"Выполнено действие в чате: {message.from_user.id}\nОт пользователя: {message.from_user.username}\nСообщение: {message.text}"
+        bot.send_message(admin_id, output)
 
 @bot.message_handler(commands=['help', 'start'])
 def start_command(message):

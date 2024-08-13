@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "moon-light-bot"
+version = "0.1.0"
+description = "Телеграмм бот"
+authors = ["Ильфат <kilfat35@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+requests = "^2.32.3"
+pyTelegramBotAPI = "^4.22.0"
+python-dotenv = "^1.0.1"
+beautifulsoup4 = "^4.12.3"
+pillow = "^10.4.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
