@@ -5,19 +5,13 @@ import shutil
 
 import requests
 import telebot
-from dotenv import load_dotenv
 from bs4 import BeautifulSoup
 from PIL import Image
 from telebot.types import InputFile
 from telebot import apihelper
+from config import bot_api, admin_id, set_server
 
-apihelper.API_URL = 'http://0.0.0.0:8081/bot{0}/{1}'
-apihelper.FILE_URL = 'http://0.0.0.0:8081'
-
-load_dotenv()
-
-bot_api = os.getenv("BOT_API")
-admin_id = os.getenv("ADMIN_ID")
+set_server()
 
 bot = telebot.TeleBot(bot_api)
 
