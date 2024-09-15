@@ -1,0 +1,19 @@
+name: Autodeploy
+on:
+    push:
+        branches:
+            - main
+jobs:
+    run_pull:
+        name: Deploy to Server
+        runs-on: ubuntu-latest
+
+        steps:
+          - name: install ssh keys
+            run: |
+                install -m 600 -D /dev/null ~/.ssh/id_rsa
+                echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+                ssh-keyscan -H ${{ secrets.SSH_HOST }} > ~/.ssh/known_hosts
+          - name: connect and pull
+            run: ssh ${{ secrets.}}
+        
