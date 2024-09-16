@@ -30,7 +30,7 @@ def parser(message, bot_message):
     response = requests.get(url)
 
     if response.status_code == 200:
-        new_text = bot_edit_message(bot_message, 'Получен ответ от сервера.)')
+        new_text = bot_edit_message(bot_message, 'Получен ответ от сервера.')
     else:
         new_text = bot_edit_message(bot_message, f'ОШИБКА: Не удалось получить ответ от сервера: {response.status_code}')
         return
