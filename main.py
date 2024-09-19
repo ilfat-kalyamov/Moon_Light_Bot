@@ -127,7 +127,7 @@ def send_message_to_admin(message):
 
 @bot.message_handler(commands=['help', 'start'])
 def start_command(message):
-    bot.send_message(message.from_user.id, "Привет, я бот для скачивания глав манги в помощь команде Moon Light team. Отправь мне ссылку на главу и я отправлю тебе в ответ архив. Ссылка пока что работает только для сайта mto.to. Ссылка должна вести на главу в режиме All pages. То есть без части ссылки /1 на конце.\n\nПрошу любые сообщения с ошибками отправлять ему @for_what_or")
+    bot.send_message(message.from_user.id, "Приветствую, я бот для скачивания глав манги в помощь команде Moon Light team. Отправь мне ссылку на главу и я отправлю тебе в ответ архив. Ссылка пока что работает только для сайта mto.to. Ссылка должна вести на главу в режиме All pages. То есть без части ссылки /1 на конце.\n\nПрошу любые сообщения с ошибками отправлять ему @for_what_or")
 
 @bot.message_handler(content_types=['text'])
 def get_text_messages(message):
