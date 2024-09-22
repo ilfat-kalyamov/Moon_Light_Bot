@@ -49,7 +49,7 @@ def parser(message, bot_message):
         new_text = bot_edit_message(new_text, 'ОШИБКА: Скрипт 14 пуст или не содержит текста.')
         return
 
-    chapter_pattern = re.search(r'const local_text_epi\s*=\s*\'(?:Vol\.\d+\s*)?Ch\.(\d+\.\d+|\d+)\';', script_14)
+    chapter_pattern = re.search(r"const local_text_epi\s*=\s*['\"](.+?)['\"]", script_14)
     if chapter_pattern:
         chapter = chapter_pattern.group(1)
     else:
