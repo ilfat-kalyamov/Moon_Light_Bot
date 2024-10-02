@@ -11,12 +11,12 @@ from telebot.types import InputFile
 from config import admin_id, bot
 
 def bot_edit_message(bot_message, text):
-    sleep(0.1)
+    sleep(0.2)
     bot_text = bot_message.text + '\n' + text
     return bot.edit_message_text(chat_id=bot_message.chat.id, message_id=bot_message.message_id, text=bot_text)
 
 def bot_edit_numbers(bot_message, number):
-    sleep(0.1)
+    sleep(0.2)
     bot_text = bot_message.text
     old = str(number-1) + '/'
     new = str(number) + '/'
@@ -64,7 +64,7 @@ def parser(message, bot_message):
     return new_text, chapter, img_https_array
 
 def dir_maker(chapter, bot_message):
-    uniq_path = str(bot_message.chat.id)
+    uniq_path = str(bot_message.chat.id + bot_message.message_id)
     os.makedirs(uniq_path, exist_ok=True)
     parent_folder = os.path.join(uniq_path, f'Глава_{chapter}')
     new_text = bot_edit_message(bot_message, f'Создаю папку: Глава_{chapter}')
