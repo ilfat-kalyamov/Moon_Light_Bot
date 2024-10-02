@@ -64,7 +64,7 @@ def parser(message, bot_message):
     return new_text, chapter, img_https_array
 
 def dir_maker(chapter, bot_message):
-    uniq_path = str(bot_message.chat.id + bot_message.message_id)
+    uniq_path = str(bot_message.chat.id) + str(bot_message.message_id)
     os.makedirs(uniq_path, exist_ok=True)
     parent_folder = os.path.join(uniq_path, f'Глава_{chapter}')
     new_text = bot_edit_message(bot_message, f'Создаю папку: Глава_{chapter}')
