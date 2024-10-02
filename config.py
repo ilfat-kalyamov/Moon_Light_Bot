@@ -1,12 +1,15 @@
 import os
-from dotenv import load_dotenv
+import telebot
 from telebot import apihelper
+from dotenv import load_dotenv
 
-load_dotenv()
+load_dotenv(override=True)
 
 bot_api = os.getenv("BOT_API")
 
 admin_id = os.getenv("ADMIN_ID")
+
+bot = telebot.TeleBot(bot_api)
 
 def set_server():
     server_mode = os.getenv("SERVER_MODE")
