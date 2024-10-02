@@ -4,5 +4,4 @@ set_server()
 
 import commands
 
-def start_bot():
-    bot.infinity_polling()
+bot.infinity_polling()
