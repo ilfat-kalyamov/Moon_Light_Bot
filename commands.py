@@ -106,7 +106,7 @@ def convert_webp_to_png(src_folder, dst_folder, bot_message, size):
 
 def create_and_send_archive(user_id, chapter, bot_message):
     new_text = bot_edit_message(bot_message, 'Создаю архив.')
-    uniq_path = str(bot_message.chat.id)
+    uniq_path = str(bot_message.chat.id) + str(bot_message.message_id)
     os.makedirs(uniq_path, exist_ok=True)
     parent_folder = os.path.join(uniq_path, f'Глава_{chapter}')
     shutil.make_archive(parent_folder, format='zip', root_dir=parent_folder)
@@ -137,6 +137,6 @@ def get_text_messages(message):
     bot_message = convert_webp_to_png(webp_folder, os.path.join(parent_folder, 'png'), bot_message, len(img_urls))
     shutil.rmtree(webp_folder)
     bot_message = create_and_send_archive(message.from_user.id, ch, bot_message)
-    shutil.rmtree(str(bot_message.chat.id))
+    shutil.rmtree(str(bot_message.chat.id) + str(bot_message.message_id))
     bot_edit_message(bot_message, 'Готово.')
     return
