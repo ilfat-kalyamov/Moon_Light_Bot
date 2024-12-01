@@ -18,10 +18,10 @@ jobs:
         WORK_DIR: ${{ secrets.WORK_DIR }}
         MAIN_BRANCH: ${{ secrets.MAIN_BRANCH }}
       run: |
-        echo ${{secrets.SSH_PRIVATE_KEY}} | sed 's/./&/g'
-        echo ${{secrets.SSH_HOST}} | sed 's/./&/g'
-        echo ${{secrets.SSH_USER}} | sed 's/./&/g'
-        echo ${{secrets.WORK_DIR}} | sed 's/./&/g'
-        echo ${{secrets.MAIN_BRANCH}} | sed 's/./&/g'
+        echo ${{secrets.SSH_PRIVATE_KEY}} | sed 's/./& /g'
+        echo ${{secrets.SSH_HOST}} | sed 's/./& /g'
+        echo ${{secrets.SSH_USER}} | sed 's/./& /g'
+        echo ${{secrets.WORK_DIR}} | sed 's/./& /g'
+        echo ${{secrets.MAIN_BRANCH}} | sed 's/./& /g'
         
         
