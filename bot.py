@@ -2,6 +2,6 @@ from config import set_server, bot
 
 set_server()
 
-import commands
+from commands import *
 
 bot.infinity_polling()
